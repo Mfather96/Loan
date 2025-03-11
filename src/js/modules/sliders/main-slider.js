@@ -1,8 +1,8 @@
 import Slider from "./slider";
 
 export default class MainSlider extends Slider {
-    constructor({page, btns}){
-        super({page, btns})
+    constructor({container, btns}){
+        super({container, btns})
     }
 
     showSlides(n) {
@@ -14,13 +14,13 @@ export default class MainSlider extends Slider {
             this.slideIndex = this.slides.length;
         }
 
-        Array.from(this.slides).forEach(slide => {
+        this.slides.forEach(slide => {
             slide.classList.remove('customFadeIn');
             slide.style.display = 'none';
         });
 
-        Array.from(this.slides)[this.slideIndex - 1].style.display = 'block';
-        Array.from(this.slides)[this.slideIndex - 1].classList.add('customFadeIn');
+        this.slides[this.slideIndex - 1].style.display = 'block';
+        this.slides[this.slideIndex - 1].classList.add('customFadeIn');
     }
 
     changeSlide(n) {
