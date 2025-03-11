@@ -23,6 +23,11 @@
     animation-duration: 0.3s;
 }
 
+.card-active .card__title,
+.card-active .card__controls-arrow {
+    opacity: 1;
+}
+
 @keyframes customFadeIn {
     0% {
         opacity: 0;

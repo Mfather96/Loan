@@ -1,10 +1,11 @@
 import MainSlider from "./modules/sliders/main-slider";
 import MiniSlider from "./modules/sliders/mini-slider";
 import VideoPlayer from "./modules/videoPlayer";
+import Difference from "./modules/difference";
 
 window.addEventListener('DOMContentLoaded', () => {
     const mainSlider = new MainSlider({
-        container: '.page', 
+        container: '.page',
         btns: '.next'
     });
     mainSlider.render();
@@ -22,6 +23,8 @@ window.addEventListener('DOMContentLoaded', () => {
         container: '.modules__content-slider',
         prev: '.modules__info-btns .slick-prev',
         next: '.modules__info-btns .slick-next',
+        activeClass: 'card-active',
+        autoplay: true,
     });
     modulesMiniSlider.init();
 
@@ -29,9 +32,12 @@ window.addEventListener('DOMContentLoaded', () => {
         container: '.feed__slider',
         prev: '.feed__slider .slick-prev',
         next: '.feed__slider .slick-next',
+        activeClass: 'feed__item-active'
     });
     feedMiniSlider.init();
 
+    const diff = new Difference('.officerold', '.officernew', '.officer__card-item');
+    diff.init();
     // const player = new VideoPlayer('.play', '.overlay');
     // player.init();
 })

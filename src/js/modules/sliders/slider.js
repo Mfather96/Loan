@@ -1,16 +1,16 @@
 export default class Slider {
     constructor({
-        container = null, 
-        btns = null, 
-        next = null, 
+        container = null,
+        btns = null,
+        next = null,
         prev = null,
-        activeClass = '',
+        activeClass,
         animate,
         autoplay
-        } = {}) 
+        } = {})
     {
         this.container = document.querySelector(container);
-        this.slides = Array.from(this.container.children);
+        this._slides = this.container.children;
         this.btns = document.querySelectorAll(btns);
         this.next = document.querySelector(next);
         this.prev = document.querySelector(prev);
@@ -18,5 +18,9 @@ export default class Slider {
         this.animate = animate;
         this.autoplay = autoplay;
         this.slideIndex = 1;
+    }
+
+    get slides() {
+        return Array.from(this._slides).filter(slide => slide.type !== 'button');
     }
 }
