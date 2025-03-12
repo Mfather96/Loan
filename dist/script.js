@@ -99,6 +99,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_sliders_mini_slider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/sliders/mini-slider */ "./src/js/modules/sliders/mini-slider.js");
 /* harmony import */ var _modules_videoPlayer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/videoPlayer */ "./src/js/modules/videoPlayer.js");
 /* harmony import */ var _modules_difference__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/difference */ "./src/js/modules/difference.js");
+/* harmony import */ var _modules_form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/form */ "./src/js/modules/form.js");
+
 
 
 
@@ -132,8 +134,8 @@ window.addEventListener('DOMContentLoaded', () => {
     activeClass: 'feed__item-active'
   });
   feedMiniSlider.init();
-  const diff = new _modules_difference__WEBPACK_IMPORTED_MODULE_3__["default"]('.officerold', '.officernew', '.officer__card-item');
-  diff.init();
+  new _modules_difference__WEBPACK_IMPORTED_MODULE_3__["default"]('.officerold', '.officernew', '.officer__card-item').init();
+  new _modules_form__WEBPACK_IMPORTED_MODULE_4__["default"]().init();
   // const player = new VideoPlayer('.play', '.overlay');
   // player.init();
 });
@@ -184,6 +186,68 @@ class Difference {
     this.hideItems(this.oldContainer);
     this.hideItems(this.newContainer);
     this.bindTriggers();
+  }
+}
+
+/***/ }),
+
+/***/ "./src/js/modules/form.js":
+/*!********************************!*\
+  !*** ./src/js/modules/form.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return FormModule; });
+/* harmony import */ var _services_dataService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/dataService */ "./src/js/services/dataService.js");
+
+class FormModule {
+  constructor() {
+    this.forms = document.querySelectorAll('form');
+    this.message = {
+      pending: 'Loading...',
+      success: 'Done!',
+      failed: 'Oops! Something went wrong. Please, try later'
+    };
+    this.dataService = new _services_dataService__WEBPACK_IMPORTED_MODULE_0__["default"]();
+  }
+  bindSubmits() {
+    this.forms.forEach(form => {
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        form.appendChild(this.getMessage(this.message.pending));
+        this.dataService.postData('./assets/question.php', formData).then(data => {
+          console.log(data);
+        });
+        setTimeout(() => {
+          form.querySelector('.message').remove();
+          form.appendChild(this.getMessage(this.message.success));
+          setTimeout(() => {
+            form.querySelector('.message').remove();
+          }, 1500);
+        }, 1500);
+      });
+    });
+  }
+  getMessage(msg) {
+    const div = document.createElement('div');
+    div.classList.add('message', `message__${msg}`);
+    div.style.cssText = `
+            text-align: center;
+            color: #fff;
+        `;
+    div.innerHTML = `
+            <span>
+                ${msg}
+            </span>
+        `;
+    return div;
+  }
+  init() {
+    this.bindSubmits();
   }
 }
 
@@ -340,7 +404,7 @@ class Slider {
     this.activeClass = activeClass;
     this.animate = animate;
     this.autoplay = autoplay;
-    this.slideIndex = 1;
+    this.slideIndex = 4;
   }
   get slides() {
     return Array.from(this._slides).filter(slide => slide.type !== 'button');
@@ -403,6 +467,32 @@ class VideoPlayer {
       this.bindTriggers();
       this.bindClose();
     } catch (e) {}
+  }
+}
+
+/***/ }),
+
+/***/ "./src/js/services/dataService.js":
+/*!****************************************!*\
+  !*** ./src/js/services/dataService.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return DataService; });
+class DataService {
+  constructor() {}
+  async postData(url, body) {
+    return await fetch(url, {
+      method: 'POST',
+      body: body
+    });
+  }
+  async getData(url) {
+    const res = await fetch(url);
+    return await res.json();
   }
 }
 

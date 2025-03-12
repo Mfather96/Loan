@@ -28,6 +28,11 @@
     opacity: 1;
 }
 
+.join__evolution .form__block div select option {
+    color: #000;
+}
+
+
 @keyframes customFadeIn {
     0% {
         opacity: 0;

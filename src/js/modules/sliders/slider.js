@@ -17,7 +17,7 @@ export default class Slider {
         this.activeClass = activeClass;
         this.animate = animate;
         this.autoplay = autoplay;
-        this.slideIndex = 1;
+        this.slideIndex = 4;
     }
 
     get slides() {
